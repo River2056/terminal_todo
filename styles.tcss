@@ -1,0 +1,12 @@
+.hide {
+    display: none;
+}
+
+.clock {
+    align: center middle;
+    height: 9;
+}
+
+Digits {
+    width: auto;
+}
