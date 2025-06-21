@@ -4,13 +4,7 @@ from textual import on
 from textual.containers import Container, HorizontalGroup, VerticalScroll
 from textual.widgets import Button, Checkbox, Digits, Header, Footer, Input
 
-from models import TaskManager
-
-
-class ActionButtons:
-    def compose(self):
-        with HorizontalGroup():
-            yield Button(id="add", label="add")
+from models.models import TaskManager
 
 
 class TodoApp(App):

@@ -6,3 +6,6 @@ dev:
 
 console:
     textual console
+
+activate:
+    source ./.venv/bin/activate
