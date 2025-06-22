@@ -2,9 +2,10 @@ from datetime import datetime
 from textual.app import App
 from textual import on, events
 from textual.containers import Container, VerticalScroll
-from textual.widgets import Checkbox, Digits, Header, Footer, Input
+from textual.widgets import Checkbox, Digits, Header, Footer, Input, Label
 
-from models.models import TaskManager
+from models.task import TaskManager
+from models.weather import WeatherManager
 
 
 class TodoApp(App):
@@ -20,6 +21,7 @@ class TodoApp(App):
     command = ""
     content = ""
     task_manager = TaskManager()
+    weather_manager = WeatherManager()
 
     input_box = Input(placeholder="stuff you want to do", id="input_box")
     tasks = task_manager.get()
@@ -28,6 +30,8 @@ class TodoApp(App):
         yield Header(show_clock=True)
         with Container(classes="clock"):
             yield Digits("")
+        with Container(classes="weather-info"):
+            yield Label(id="weather")
 
         yield self.input_box
         with VerticalScroll(id="todos"):
@@ -38,12 +42,19 @@ class TodoApp(App):
 
     def on_ready(self):
         self.update_clock()
+        self.update_weather()
         self.set_interval(1, self.update_clock)
+        self.set_interval(2 * 60, self.update_weather)
         self.query_one("#input_box").add_class("hide")
 
     def update_clock(self):
         now = datetime.now().time()
         self.query_one(Digits).update(f"{now:%T}")
+
+    def update_weather(self):
+        weather = self.weather_manager.fetch_weather()
+        render_str = f"{weather.name}, {weather.temperature}, {weather.text}"
+        self.query_one("#weather", Label).update(render_str)
 
     def on_key(self, event: events.Key):
         if event.key == "escape" and not self.input_box.has_class("hide"):
