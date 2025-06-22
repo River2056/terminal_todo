@@ -1,19 +1,35 @@
 import os
 import requests
 
+from datetime import datetime
+
 
 class Weather:
 
     def __init__(
-        self, name="Unknown", temperature="Unknown", text="Unknown", icon="Unknown"
+        self,
+        name="Unknown",
+        temperature="Unknown",
+        text="Unknown",
+        icon_code=0,
+        last_updated=datetime.now().strftime("%Y-%m-%d %H:%M"),
     ):
+        icon_mapping = {
+            1000: "☀️",
+            1003: "🌤️",  # Partly Cloudy
+            1006: "🌥️",  # Cloudy
+            1009: "☁️",  # OverCast
+            0: "",
+        }
         self.name = name
         self.temperature = temperature
         self.text = text
-        self.icon = icon
+        self.icon_code = icon_code
+        self.icon = icon_mapping.get(self.icon_code, "")
+        self.last_updated = last_updated
 
     def __repr__(self) -> str:
-        return f"Weather[name: {self.name}, temperature: {self.temperature}, text: {self.text}, icon: {self.icon}]"
+        return f"Weather[name: {self.name}, temperature: {self.temperature}, text: {self.text}, icon_code: {self.icon_code}, icon: {self.icon}]"
 
 
 class WeatherManager:
@@ -33,7 +49,8 @@ class WeatherManager:
                 name=res_obj["location"]["name"],
                 temperature=res_obj["current"]["temp_c"],
                 text=res_obj["current"]["condition"]["text"],
-                icon=res_obj["current"]["condition"]["icon"],
+                icon_code=res_obj["current"]["condition"]["code"],
+                last_updated=res_obj["current"]["last_updated"],
             )
 
         return Weather()

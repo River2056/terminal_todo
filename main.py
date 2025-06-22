@@ -53,7 +53,7 @@ class TodoApp(App):
 
     def update_weather(self):
         weather = self.weather_manager.fetch_weather()
-        render_str = f"{weather.name}, {weather.temperature}, {weather.text}"
+        render_str = f"{weather.name}, {weather.temperature}, {weather.icon} {weather.text}, last updated: {weather.last_updated}"
         self.query_one("#weather", Label).update(render_str)
 
     def on_key(self, event: events.Key):

@@ -16,8 +16,10 @@ def main():
         print(res_obj)
         print(res_obj["location"]["name"])
         print(res_obj["current"]["temp_c"])
+        print(res_obj["current"]["last_updated"])
         print(res_obj["current"]["condition"]["text"])
         print(res_obj["current"]["condition"]["icon"])
+        print(res_obj["current"]["condition"]["code"])
 
 
 if __name__ == "__main__":
