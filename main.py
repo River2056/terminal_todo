@@ -10,7 +10,25 @@ from models.weather import WeatherManager
 
 class TodoApp(App):
 
-    CSS_PATH = "styles.tcss"
+    DEFAULT_CSS = """
+        .hide {
+            display: none;
+        }
+
+        .clock {
+            align: center middle;
+            height: 9;
+        }
+
+        .weather-info {
+            align: center middle;
+            height: 2;
+        }
+
+        #digits {
+            width: auto;
+        }
+    """
 
     BINDINGS = [
         ("q", "quit", "Quit"),
@@ -29,7 +47,7 @@ class TodoApp(App):
     def compose(self):
         yield Header(show_clock=True)
         with Container(classes="clock"):
-            yield Digits("")
+            yield Digits(id="digits", value="")
         with Container(classes="weather-info"):
             yield Label(id="weather")
 

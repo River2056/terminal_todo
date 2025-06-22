@@ -9,3 +9,6 @@ console:
 
 activate:
     source ./.venv/bin/activate
+
+package:
+    pyinstaller --onefile main.py --name todos
